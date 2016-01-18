@@ -1,0 +1,18 @@
+- hosts: dbserver
+  user: vagrant
+  sudo: True
+  tasks:
+    - shell: sudo apt-get update
+    - name: install common packages
+      action: apt pkg={{ item }} state=latest
+      with_items:
+        - vim
+        - build-essential
+        - postgresql
+        - libpq-dev
+        - python-psycopg2
+
+    - shell: sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+
+    - name: Make sure MongoDB is running
+      action: service name=postgresql state=started
